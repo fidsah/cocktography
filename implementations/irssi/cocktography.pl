@@ -80,20 +80,18 @@ sub irsii_enchode($$) {
 sub irsii_dechode($$) {
 	my ($dicks) = @_;
 	my $fatone = Cocktography2->dechode_string($dicks);
-	#print $fatone;
+	print $fatone;
 	
-
 }
 
 sub event_privmsg {
-
 	my ($server, $data, $nick, $address) = @_;
 	my ($target, $text) = split(/ :/, $data, 2);
 	my $key = $nick . $target;
 	my @boner = Cocktography2->find_cockblocks($text);
 
 	if (not defined  $boner[0][0]) {
-	return;
+		return;
 	}
     my $message;
 	my $color;
@@ -108,7 +106,6 @@ sub event_privmsg {
 			$color = 0;
 			$glyph = $rooster;
 		} 
-		print $message->{'message'};
 		$server->print($target, '<' . $color . '' . $message->{'strokes'} . $glyph. $nick . '> ' . $message->{'message'}, MSGLEVEL_MSGS);
 		Irssi::signal_stop();
 	}

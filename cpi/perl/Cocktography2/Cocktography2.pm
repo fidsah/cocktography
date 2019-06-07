@@ -115,7 +115,6 @@ sub dechode_string($$) {
 			my ($destroked, $strokecount) = $self->destroke($cyphallic);
 			$count = $strokecount;
 			$dechoded .= $destroked;
-			print "Count: " . $count . " Dechode: " . $dechoded;
 		} elsif ($cockblock->{'TYPE'} == $COCKBLOCK_TYPE{'INITIAL'} && ($prev_type != $COCKBLOCK_TYPE{'INITIAL'} && $prev_type != $COCKBLOCK_TYPE{'INTERMEDIATE'})) {
 			$condom = $cyphallic;
 		} elsif ($cockblock->{'TYPE'} == $COCKBLOCK_TYPE{'INTERMEDIATE'} && ($prev_type == $COCKBLOCK_TYPE{'INITIAL'} || $prev_type == $COCKBLOCK_TYPE{'INTERMEDIATE'})) {
@@ -125,7 +124,6 @@ sub dechode_string($$) {
 			my ($destroked, $strokecount) = $self->destroke($condom);
 			$count = $strokecount;
 			$dechoded .= $destroked;
-			print "Count: " . $count . " Dechode: " . $dechoded;
 		} else {
 			carp "Error: $COCKBLOCK_TYPE_REVERSE{$prev_type} should not appear before $COCKBLOCK_TYPE_REVERSE{type}!";
 		}
@@ -133,7 +131,6 @@ sub dechode_string($$) {
 		$prev_type = $cockblock->{'TYPE'};
 	}
 	#        {"TYPE" => $cockblock_type, "TEXT" => $2};
-	print "Returning { \"message\" => $dechoded, \"strokes\" => $count }; with values ". $dechoded . " " .  $count;
 	return { "message" => $dechoded, "strokes" => $count };
 }
 
@@ -262,7 +259,6 @@ sub find_cockblocks($$) {
 	my($self, $input) = @_;
 	
 	my $cockblocks = [];
-	
 	# Construct a search pattern. Essentially, we're looking for anything starting with a valid chode in the [BEGIN] set, and ending with one in the [END] set.
 	
 	my $pattern =
@@ -275,7 +271,6 @@ sub find_cockblocks($$) {
 		"(" .
 			join("|", map(quotemeta, @{$KONTOL_CHODES{'[END]'}})) .
 	")";
-	
 	while ($input =~ /$pattern/g) {
 		my $cockblock_type;
 		
@@ -283,7 +278,6 @@ sub find_cockblocks($$) {
 		$cockblock_type = $COCKBLOCK_TYPE{"INITIAL"} if ($1 eq $KONTOL_CHODES{'START'} && $3 eq $KONTOL_CHODES{'CONT'});
 		$cockblock_type = $COCKBLOCK_TYPE{"INTERMEDIATE"} if ($1 eq $KONTOL_CHODES{'MARK'} && $3 eq $KONTOL_CHODES{'CONT'});
 		$cockblock_type = $COCKBLOCK_TYPE{"FINAL"} if ($1 eq $KONTOL_CHODES{'MARK'} && $3 eq $KONTOL_CHODES{'STOP'});
-		
 		push @{$cockblocks}, {"TYPE" => $cockblock_type, "TEXT" => $2};
 	}
 	
